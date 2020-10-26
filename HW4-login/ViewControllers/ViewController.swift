@@ -14,20 +14,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var logInButton: UIButton!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround() //переделать функцию
-        
         }
 
-    @IBAction func logInButtonAction(){ //УПРОСТИТЬ
-        
-        if userNameTextField.text == firstUser.user && passwordTextField.text == firstUser.password {
-        } else {
-            showAlert(with: "You Wrong!", and: "Please enter correct password")
-            passwordTextField.text = ""
-        }
+    @IBAction func logInButtonAction(){
+        logInChec()
     }
     
     @IBAction func forgotUserNameButton() {
@@ -39,12 +31,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return
     }
     
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super .touchesBegan(touches, with: event)
-//
-//    }
-
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let tabBarController = segue.destination as! UITabBarController
         let selfVC = tabBarController.viewControllers?.first as! SelfViewController
@@ -55,20 +41,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         userNameTextField.text = ""
         passwordTextField.text = ""
     }
-}
-
-
-//MARK: = Hide keyboard
-extension UIViewController { //расширение скрывает клавиатуру при тапе
-    func hideKeyboardWhenTappedAround() {
-     let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-      tap.cancelsTouchesInView = false
-      view.addGestureRecognizer(tap)
-    }
-    @objc func dismissKeyboard() {
-       view.endEditing(true)
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super .touchesBegan(touches, with: event)
+        self.view.endEditing(true)
     }
 }
+
 
 // MARK: - Alert Controller
 extension ViewController {
@@ -77,5 +56,21 @@ extension ViewController {
         let okAction = UIAlertAction(title: "OK", style: .default)
         alert.addAction(okAction)
         present(alert, animated: true)
+    }
+}
+
+extension ViewController {
+    private func logInChec() {
+        guard let user = userNameTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        let inputData = [user : password]
+        for (key, value) in firstUser.userDic {
+            let someUser = [key: value]
+            if inputData == someUser {
+            } else {
+                showAlert(with: "You Wrong!", and: "Please enter correct password")
+                passwordTextField.text = ""
+            }
+        }
     }
 }

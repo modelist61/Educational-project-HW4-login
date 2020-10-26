@@ -5,23 +5,19 @@
 //  Created by Dmitry Tokarev on 24.10.2020.
 //
 
-class userPassword {
-    let user: String
-    let password: String
-    
-    var someUser = [String: String]()
-    
-    init(user: String, password: String) {
-        self.user = user
-        self.password = password
-    }
-    
-    func userDict(user: String, password: String) {
-        someUser[user] = password
+struct userPassword {
+    let userDic: [String: String]
+    init(userDic: [String: String]) {
+        self.userDic = userDic
     }
 }
 
-let firstUser = userPassword(user: "User", password: "Password")
+let firstUser = userPassword(userDic: ["User" : "Password"])
+
+
+
+
+
 
 
 
